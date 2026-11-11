@@ -1,54 +1,3 @@
-/*using UnityEngine;
-using UnityEngine.InputSystem;
-
-public class PlayerMovement : MonoBehaviour
-{
-    public float moveSpeed = 5f;
-    public float turnSpeed = 120f;
-    Rigidbody rb;
-    Vector2 moveInput;
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
-    private void FixedUpdate() // Rigidbd처럼 물리 법칙을 계산 할 때 씀
-    {
-        rb.MovePosition(rb.position + moveSpeed * transform.forward * moveInput.y * Time.fixedDeltaTime);
-
-        float angle = moveInput.x * turnSpeed * Time.fixedDeltaTime;
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(0, angle, 0));
-    }
-
-    void Update() //일반적인 입력이나 루프
-    {
-        moveInput.y = 0;
-        moveInput.x = 0;
-        Keyboard keyboard = Keyboard.current;
-        if (keyboard.wKey.isPressed == true)
-        {
-            moveInput.y = 1;
-
-        }
-
-        if (keyboard.aKey.isPressed == true)
-        {
-            moveInput.x = -1;
-        }
-
-
-        if (keyboard.sKey.isPressed == true)
-        {
-            moveInput.y = -1;
-        }
-
-
-        if (keyboard.dKey.isPressed == true)
-        {
-            moveInput.x = 1;
-        }
-    }
-}*/
-
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -57,89 +6,91 @@ using static Unity.Collections.Unicode;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("이동 설정")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float turnSpeed = 60f;
+    public float walkSpeed = 3.0f;
+    public float runSpeed = 6.0f;
+    public float rotationSpeed = 10.0f;
 
     [Header("Input Actions")]
-    [SerializeField] private InputActionReference vertical;
-    [SerializeField] private InputActionReference horizontal;
-    [SerializeField] private InputActionReference lshift;
+    public InputActionReference moveAction;
+    public InputActionReference runAction;
 
-    private float moveInput;
-    public float MoveInput
-    {
-        get
-        {
-            return moveInput;
-        }
-        set
-        {
-            if (MoveInput >= 0) value = moveInput;
+    [Header("컴포넌트")]
+    public Rigidbody rb;
+    public Transform cameraTransform;
 
-        }
-    }
-    private float rotateInput;
-    Rigidbody rb;
-
-    private void Awake()
-    {
-        rb = this.GetComponent<Rigidbody>();
-    }
-
+    private Vector3 moveDirection;
+    private float currentSpeed;
+  
     private void OnEnable()
     {
-        vertical.action.Enable();
-        horizontal.action.Enable();
-
-        vertical.action.performed += Move;
-        vertical.action.canceled += Move;
-
-        horizontal.action.performed += Rotate;
-        horizontal.action.canceled += Rotate;
-
-        lshift.action.performed += Run;
-        lshift.action.canceled += Run;
+        moveAction.action.Enable();
+        runAction.action.Enable();
     }
 
     private void OnDisable()
     {
-        vertical.action.performed -= Move;
-        vertical.action.canceled -= Move;
-
-        horizontal.action.performed -= Rotate;
-        horizontal.action.canceled -= Rotate;
-
-        lshift.action.performed -= Run;
-        lshift.action.canceled -= Run;
-
-        vertical.action.Disable();
-        horizontal.action.Disable();
+        moveAction.action.Disable();
+        runAction.action.Disable();
     }
 
-    private void Move(InputAction.CallbackContext context)
+    void Update()
     {
-        moveInput = context.ReadValue<float>();
+        if (cameraTransform == null) return;
+
+        // 이동 입력 받기
+        Vector2 inputVector = moveAction.action.ReadValue<Vector2>();
+
+        float horizontal = inputVector.x;
+        float vertical = inputVector.y;
+
+        // 카메라의 수평 방향 계산
+        Vector3 cameraForward = cameraTransform.forward;
+        Vector3 cameraRight = cameraTransform.right;
+
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        // 카메라 기준 이동 방향
+        moveDirection =
+            (cameraForward * vertical + cameraRight * horizontal).normalized;
+
+        // 달리기 입력
+        bool isRunning = runAction.action.IsPressed();
+
+        currentSpeed = isRunning ? runSpeed : walkSpeed;
+
     }
 
-    private void Rotate(InputAction.CallbackContext context)
+    void FixedUpdate()
     {
-        rotateInput = context.ReadValue<float>();
-    }
-    private void Run(InputAction.CallbackContext context)
-    {
-        if (context.performed) moveSpeed = 10f;
-        else moveSpeed = 5f;
+        // 이동
+        Vector3 velocity = moveDirection * currentSpeed;
 
-    }
-    private void Update()
-    {
-        transform.Translate(
-            Vector3.forward * moveInput * moveSpeed * Time.deltaTime
+        rb.linearVelocity = new Vector3(
+            velocity.x,
+            rb.linearVelocity.y,
+            velocity.z
         );
 
-        transform.Rotate(
-            Vector3.up * rotateInput * turnSpeed * Time.deltaTime
-        );
+        // 이동 방향으로 플레이어 회전
+        if (moveDirection.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation =
+                Quaternion.LookRotation(moveDirection);
+
+            Quaternion newRotation = Quaternion.Slerp(
+                rb.rotation,
+                targetRotation,
+                rotationSpeed * Time.fixedDeltaTime
+            );
+
+            rb.MoveRotation(newRotation);
+        }
     }
+
+
 }
 

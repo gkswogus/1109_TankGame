@@ -1,47 +1,46 @@
+using System;
+using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerFollowCamera : MonoBehaviour
 {
-    public Transform target;
-
     [Header("카메라 설정")]
-    public Vector3 offset = new Vector3(0, 4, -4);
-    public float smoothTime = 0.2f;
-    public float fixedXAngle = 30f;
+    public Transform target;
+    public float mouseSensitivity = 3.0f;
+    public float minPitch = -45f;
+    public float maxPitch = 75f;
 
-    private Vector3 velocity;
-
-    private void Start()
+    private float yaw;
+    private float pitch;
+    void Start()
     {
-        if (target == null)
-        {
-            Debug.LogError("Player가 없습니다.");
-            return;
-        }
+        yaw = transform.eulerAngles.y;
+        pitch = 10f;
 
-        transform.position = target.TransformPoint(offset);
+    }
+    private void Update()
+    {
+       Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
         if (target == null) return;
 
-        Vector3 dest = target.TransformPoint(offset);
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            dest,
-            ref velocity,
-            smoothTime
-        );
+        yaw += mouseX;
+        pitch -= mouseY;
 
-        Quaternion targetRotation = target.rotation * Quaternion.Euler(fixedXAngle, 0, 0);
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRotation,
-            10f * Time.deltaTime
-        );
+        // 카메라 회전
+        transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+
+        // 플레이어 위치 따라가기
+        transform.position = target.position;
     }
 }

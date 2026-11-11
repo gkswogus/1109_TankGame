@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
     private float currentLifeTime;
 
-  
+  [SerializeField] private BulletHitEffect hitEffectPrefab;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
+  
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == ("Enermy"))
@@ -47,6 +47,7 @@ public class Bullet : MonoBehaviour
                  e.HitDamage(damage);
             }  
         }
+        if (hitEffectPrefab != null) hitEffectPrefab.Play(transform.position);
         gameObject.SetActive(false);
     }
 }

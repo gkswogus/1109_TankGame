@@ -34,7 +34,11 @@ public class EnermyBullet : MonoBehaviour
     {
         if (collision.gameObject.tag == ("Player"))
         {
-            Debug.Log("플레이어 타격!!");
+            PlayerStat ps = collision.gameObject.GetComponent<PlayerStat>();
+            if (ps != null)
+            {
+                ps.PlayerDamage(damage);           
+            }
         }
         Destroy(gameObject);
     }
