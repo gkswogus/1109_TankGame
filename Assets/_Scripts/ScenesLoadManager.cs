@@ -8,4 +8,8 @@ public class ScenesLoadManager : MonoBehaviour
         GameManager.Instance.currentStage++;
         SceneManager.LoadScene("Stage" + GameManager.Instance.currentStage);
     }
+    public void ReStartStage()
+    {
+        SceneManager.LoadScene("Stage" + GameManager.Instance.currentStage);
+    }
 }

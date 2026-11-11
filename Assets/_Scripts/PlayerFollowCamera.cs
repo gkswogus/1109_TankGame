@@ -12,22 +12,20 @@ public class PlayerFollowCamera : MonoBehaviour
 
     private float yaw;
     private float pitch;
+
+    public GameObject ui;
     void Start()
     {
         yaw = transform.eulerAngles.y;
         pitch = 10f;
 
     }
-    private void Update()
-    {
- /*      Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-*/
-    }
+ 
 
     void LateUpdate()
     {
         if (target == null) return;
+        if (GameManager.Instance.enermyCount == 0) return;
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;

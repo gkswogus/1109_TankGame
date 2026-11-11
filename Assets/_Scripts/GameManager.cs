@@ -24,10 +24,7 @@ public class GameManager : MonoBehaviour
         }
         else Destroy(gameObject);
     }
-    private void Start()
-    {
-
-    }
+  
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnScenLoaded; 
@@ -76,13 +73,9 @@ public class GameManager : MonoBehaviour
     Application.Quit();
 #endif
     }
-
-    /*IEnumerator Winners()
+    public void RestartStage()
     {
-        winPanel.SetActive(true);
-        yield return new WaitForSeconds(3.0f);
-        winPanel.SetActive(false);
-        this.gameObject.GetComponent<ScenesLoadManager>().NextStage();
-    }*/
-
+        this.gameObject.GetComponent<ScenesLoadManager>().ReStartStage();
+    }
+   
 }
