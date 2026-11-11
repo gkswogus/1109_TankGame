@@ -2,11 +2,19 @@ using UnityEngine;
 
 public class PlayerStat : MonoBehaviour
 {
+
+
     [SerializeField] private int hp;
-    public int Hp {  get { return hp; } set { hp = value; } } 
+    public int Hp {  get { return hp; } set { hp = value; } }
+
+    private void Start()
+    {
+      HealthUI.Instance.SetHp(hp);
+    }
     public void PlayerDamage(int damage)
     {
         this.Hp-=damage;
+        HealthUI.Instance.SetHp(hp);
 
         if (Hp <= 0)
         {

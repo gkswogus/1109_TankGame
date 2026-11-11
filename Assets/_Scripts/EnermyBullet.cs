@@ -4,7 +4,7 @@ public class EnermyBullet : MonoBehaviour
 {
     public float speed = 20f;
     public float distroyBulleTime = 2.0f;
-    public int damage = 30;
+    public int damage = 1;
     private Rigidbody rb;
     private float currentLifeTime;
 

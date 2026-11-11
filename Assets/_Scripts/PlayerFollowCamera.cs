@@ -13,7 +13,6 @@ public class PlayerFollowCamera : MonoBehaviour
     private float yaw;
     private float pitch;
 
-    public GameObject ui;
     void Start()
     {
         yaw = transform.eulerAngles.y;
