@@ -7,13 +7,12 @@ public class Bullet : MonoBehaviour
     public int damage = 30;
     private Rigidbody rb;
     private float currentLifeTime;
-
-  [SerializeField] private BulletHitEffect hitEffectPrefab;
+    private BulletHitEffect hitEffectPrefab;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-     
+        hitEffectPrefab = this.gameObject.GetComponent<BulletHitEffect>();
     }
 
     private void OnEnable()

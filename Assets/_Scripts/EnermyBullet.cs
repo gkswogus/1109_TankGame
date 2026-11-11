@@ -40,6 +40,6 @@ public class EnermyBullet : MonoBehaviour
                 ps.PlayerDamage(damage);           
             }
         }
-        Destroy(gameObject);
+       if(collision.gameObject.tag!=("Enermy")&&collision.gameObject.tag!=("EnermyBullet")) Destroy(gameObject);
     }
 }

@@ -20,17 +20,32 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 moveDirection;
     private float currentSpeed;
+
+    public AudioClip movesound;
   
     private void OnEnable()
     {
         moveAction.action.Enable();
         runAction.action.Enable();
+        moveAction.action.started += Movesound;
+        moveAction.action.canceled += StopMovesound;
     }
-
+ 
     private void OnDisable()
     {
         moveAction.action.Disable();
         runAction.action.Disable();
+        moveAction.action.started -= Movesound;
+        moveAction.action.canceled += StopMovesound;
+    }
+   
+    public void Movesound(InputAction.CallbackContext context)
+    {
+        SoundManager.Instance.PlayMove(movesound);
+    }
+    private void StopMovesound(InputAction.CallbackContext context)
+    {
+        SoundManager.Instance.StopMove();
     }
 
     void Update()

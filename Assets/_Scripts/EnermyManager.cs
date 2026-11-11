@@ -27,6 +27,7 @@ public class EnermyManager : MonoBehaviour
     private void Die()
     {
         Debug.Log($"적의 남은 체력{Hp} 적 사망!");
+        GameManager.Instance.KillEnermy();
         Destroy(gameObject);
     }
 }

@@ -8,6 +8,8 @@ public class BulletHitEffect : MonoBehaviour
         if (hitEffectPrefab == null)
             return;
 
-        Instantiate(hitEffectPrefab, position, Quaternion.identity);
+        GameObject effect = Instantiate(hitEffectPrefab,  position, Quaternion.identity);
+
+        Destroy(effect, 1f);
     }
 }
