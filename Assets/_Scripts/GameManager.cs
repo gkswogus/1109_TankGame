@@ -61,16 +61,28 @@ public class GameManager : MonoBehaviour
         if (enermyCount <= 0)
         {
             stageText.text = currentStage.ToString();
-            StartCoroutine(Winners());
+            winPanel.SetActive(true);
         }           
     }
+    public void NextStage()
+    {
+        this.gameObject.GetComponent<ScenesLoadManager>().NextStage();
+    }
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+    }
 
-    IEnumerator Winners()
+    /*IEnumerator Winners()
     {
         winPanel.SetActive(true);
         yield return new WaitForSeconds(3.0f);
         winPanel.SetActive(false);
         this.gameObject.GetComponent<ScenesLoadManager>().NextStage();
-    }
+    }*/
 
 }

@@ -20,9 +20,9 @@ public class PlayerFollowCamera : MonoBehaviour
     }
     private void Update()
     {
-       Cursor.lockState = CursorLockMode.Locked;
+ /*      Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
+*/
     }
 
     void LateUpdate()
