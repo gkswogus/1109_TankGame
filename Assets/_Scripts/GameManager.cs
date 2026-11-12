@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     public int enermyCount = 0;
     public int currentStage = 1; // 이 값 타이틀에서 스테이지선택 or 게임시작 시 디폴트1로 값 지정.
-    public int maxClearStage;
+    public int maxClearStage; //클리어 하지 못한 스테이지는 스테이지선택에서 불가능하게 만들 예정
 
     public bool isGameOver;
 

@@ -5,9 +5,10 @@ public class EnemyShooter : MonoBehaviour
     public GameObject bulletPrefab;  // 총알 프리팹
     public Transform player;         // 플레이어 위치
     public Transform firePoint;       // 총알 생성 위치
-
+    [Header("발사 간격 개인 조정")]
     public float fireInterval = 2f;  // 발사 간격
-
+    [Header("포물선 각도 개인 조정")]
+    public float time = 1.5f;// 총알이 목표에 도달하는 시간
     private float timer = 0f;
 
     void Update()
@@ -38,8 +39,7 @@ public class EnemyShooter : MonoBehaviour
         // 중력 가속도
         float gravity = Mathf.Abs(Physics.gravity.y);
 
-        // 총알이 목표에 도달하는 시간
-        float time = 1.5f;
+      
 
         // X, Z 방향 속도 계산
         Vector3 velocity = new Vector3(
