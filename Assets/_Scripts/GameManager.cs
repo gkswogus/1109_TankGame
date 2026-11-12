@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     public int enermyCount = 0;
     public int currentStage = 1; // 이 값 타이틀에서 스테이지선택 or 게임시작 시 디폴트1로 값 지정.
+    public int maxClearStage;
 
     public bool isGameOver;
 
@@ -81,9 +82,9 @@ public class GameManager : MonoBehaviour
         this.gameObject.GetComponent<ScenesLoadManager>().ReStartStage();
     }
 
-    public void ChoiceStage()
+    public void ChoiceStage(int stage)
     {
-
+        this.currentStage = stage;
     }
    
 
