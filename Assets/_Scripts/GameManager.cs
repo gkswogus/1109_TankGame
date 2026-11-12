@@ -11,9 +11,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-  /*  [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI stageText;
-    [SerializeField] private GameObject winPanel;*/
 
     public int enermyCount = 0;
     public int currentStage = 1; // 이 값 타이틀에서 스테이지선택 or 게임시작 시 디폴트1로 값 지정.
@@ -105,7 +102,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SelectTank(int index)
+    public void SelectTank(int index) 
     {
         if (index < 0 || index >= tankSkinPrefabs.Length)
         {
