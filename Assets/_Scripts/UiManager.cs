@@ -1,23 +1,29 @@
+using TMPro;
 using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
-    private static UiManager Instance;
+    public  static UiManager Instance;
+     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI stageText;
+    public GameObject winPanel;
 
-    public GameObject mainUi;
+    //public GameObject mainUi;
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance= this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else Destroy(gameObject);
+        if(Instance == null) Instance = this;
+
+    }
+    private void Start()
+    {
+        scoreText.text = GameManager.Instance.enermyCount.ToString();
+        stageText.text = GameManager.Instance.currentStage.ToString();
+        winPanel.SetActive(false);
     }
 
     public void Update()
     {
-        if (!mainUi.activeInHierarchy)
+        if (!winPanel.activeInHierarchy)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

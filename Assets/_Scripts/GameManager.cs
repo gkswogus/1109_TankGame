@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private TextMeshProUGUI scoreText;
+  /*  [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI stageText;
-    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject winPanel;*/
 
     public int enermyCount = 0;
-    public int currentStage = 1;
+    public int currentStage = 1; // 이 값 타이틀에서 스테이지선택 or 게임시작 시 디폴트1로 값 지정.
+
+
+
+    [Header("탱크 스킨 목록")]
+    [SerializeField] private GameObject[] tankSkinPrefabs;
+    public int SeletedTankIndex { get; private set; } = 0;
 
     private void Awake()
     {
@@ -27,7 +34,7 @@ public class GameManager : MonoBehaviour
   
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnScenLoaded; 
+        SceneManager.sceneLoaded += OnScenLoaded;
     }
     private void OnDisable()
     {
@@ -35,31 +42,25 @@ public class GameManager : MonoBehaviour
     }
     public void OnScenLoaded(Scene scene, LoadSceneMode mode)
     {
-        CountEnermys();
-        CountStage();
-        winPanel.SetActive(false);
+        init();
     }
-    public void CountEnermys()
+    public void init()
     {
         GameObject[] Count = GameObject.FindGameObjectsWithTag("Enermy");
         enermyCount = Count.Length;
-        scoreText.text = enermyCount.ToString();
     }
 
-    public void CountStage()
-    {
-        stageText.text = currentStage.ToString();       
-    }
+
 
     public void KillEnermy() //적 사망 시 호출하도록.
     {
         this.enermyCount -= 1;
-        scoreText.text = enermyCount.ToString();
+        UiManager.Instance.scoreText.text = enermyCount.ToString();
         if (enermyCount <= 0)
         {
-            stageText.text = currentStage.ToString();
-            winPanel.SetActive(true);
-        }           
+            UiManager.Instance.stageText.text = currentStage.ToString();
+            UiManager.Instance.winPanel.SetActive(true);
+        }
     }
     public void NextStage()
     {
@@ -77,5 +78,32 @@ public class GameManager : MonoBehaviour
     {
         this.gameObject.GetComponent<ScenesLoadManager>().ReStartStage();
     }
+
+    public void ChoiceStage()
+    {
+
+    }
    
+
+    /* 탱크 스킨을 고르는 내용 */
+    public GameObject SelectedTankPrefab
+    {
+        get
+        {
+            return tankSkinPrefabs[SeletedTankIndex];
+        }
+    }
+
+    public void SelectTank(int index)
+    {
+        if (index < 0 || index >= tankSkinPrefabs.Length)
+        {
+            Debug.LogError("잘못 된 탱크 인덱스");
+            return;
+        }
+        SeletedTankIndex = index;
+
+        Debug.Log("선택 된 탱크 이름 :" + SelectedTankPrefab.name);
+
+    }
 }
