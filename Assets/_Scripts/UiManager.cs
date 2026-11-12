@@ -7,6 +7,7 @@ public class UiManager : MonoBehaviour
      public TextMeshProUGUI scoreText;
     public TextMeshProUGUI stageText;
     public GameObject winPanel;
+    public GameObject losePanel;
 
     //public GameObject mainUi;
     private void Awake()
@@ -16,14 +17,17 @@ public class UiManager : MonoBehaviour
     }
     private void Start()
     {
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
+        if (scoreText == null || stageText == null) return;
         scoreText.text = GameManager.Instance.enermyCount.ToString();
         stageText.text = GameManager.Instance.currentStage.ToString();
-        winPanel.SetActive(false);
+     
     }
 
     public void Update()
     {
-        if (!winPanel.activeInHierarchy)
+        if (!winPanel.activeInHierarchy && !losePanel.activeInHierarchy)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

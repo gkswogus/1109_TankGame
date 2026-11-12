@@ -27,8 +27,10 @@ public class PlayerStat : MonoBehaviour
     }
     private void Die()
     {
-        Debug.Log($"플레이어의 남은 체력{Hp} 적 사망!");
-       // Destroy(gameObject);
+        Debug.Log($"플레이어의 남은 체력{Hp} 사망!");
+
+        UiManager.Instance.losePanel.SetActive(true);
+        GameManager.Instance.isGameOver = true;
     }
  
 }

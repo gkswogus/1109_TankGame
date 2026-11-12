@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.SceneManagement;
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     public int enermyCount = 0;
     public int currentStage = 1; // 이 값 타이틀에서 스테이지선택 or 게임시작 시 디폴트1로 값 지정.
 
-
+    public bool isGameOver;
 
     [Header("탱크 스킨 목록")]
     [SerializeField] private GameObject[] tankSkinPrefabs;
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject[] Count = GameObject.FindGameObjectsWithTag("Enermy");
         enermyCount = Count.Length;
+        isGameOver = false;
     }
 
 

@@ -41,6 +41,7 @@ public class TankShooter : MonoBehaviour
 
     void Shoot()
     {
+        if (GameManager.Instance.isGameOver) return;
         if (bulletPrefab == null || bulletShooter == null)
         {
             Debug.LogError($"<Color=yellow><b>Bullet Prefab 또는 BulletShooter</b></color>가 연결되지 않았습니다!");
