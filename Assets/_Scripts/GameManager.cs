@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -81,7 +82,14 @@ public class GameManager : MonoBehaviour
     {
         this.gameObject.GetComponent<ScenesLoadManager>().ReStartStage();
     }
-
+    public void BackStage()
+    {
+        this.gameObject.GetComponent<ScenesLoadManager>().BackStage();
+    }
+    public void TitleStage()
+    {
+        this.gameObject.GetComponent<ScenesLoadManager>().TitleStage();
+    }
     public void ChoiceStage(int stage)
     {
         this.currentStage = stage;

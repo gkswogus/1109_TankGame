@@ -37,4 +37,22 @@ public void ChoiceUiOn()
     {
         SoundVolmeUI.SetActive(false);
     }
+
+    public void GameStart()
+    {
+        GameManager.Instance.NextStage();
+    }
+    public void GameEnd()
+    {
+        GameManager.Instance.ExitGame();
+    }
+
+    public void SelectTank(int index)
+    {
+        GameManager.Instance.SelectTank(index);
+    }
+    public void ChoiceStage(int index)
+    {
+        GameManager.Instance.ChoiceStage(index);
+    }
 }
