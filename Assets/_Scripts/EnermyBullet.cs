@@ -37,7 +37,14 @@ public class EnermyBullet : MonoBehaviour
             PlayerStat ps = collision.gameObject.GetComponent<PlayerStat>();
             if (ps != null)
             {
-                ps.PlayerDamage(damage);           
+                ps.PlayerDamage(damage);
+                CameraCollison cameraEffect =
+     Camera.main.GetComponent<CameraCollison>();
+
+                if (cameraEffect != null)
+                {
+                    cameraEffect.PlayHitEffect();
+                }
             }
         }
        if(collision.gameObject.tag!=("Enermy")&&collision.gameObject.tag!=("EnermyBullet")) Destroy(gameObject);

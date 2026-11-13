@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraCollison : MonoBehaviour
@@ -43,5 +45,45 @@ public class CameraCollison : MonoBehaviour
             transform.position =
                 origin + direction.normalized * Mathf.Max(0f, hitDistance);
         }
+    }
+
+
+    //적 총알 충돌 시 카메라 돌려주는 부분
+    [Header("피격 회전 설정 낮을수록빠름, 높을수록 느림")]
+    [SerializeField] private float hitRotateDuration = 0.5f;
+
+    private bool isHitRotating;
+    private float hitElapsed;
+
+    public void PlayHitEffect()
+    {
+        if (isHitRotating)
+            return;
+
+        StartCoroutine(RotateHit());
+    }
+
+    private IEnumerator RotateHit()
+    {
+        isHitRotating = true;
+
+        float elapsed = 0f;
+
+        while (elapsed < hitRotateDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float angle = Mathf.Lerp(
+                0f, 360f, elapsed / hitRotateDuration);
+
+            transform.localRotation =
+                Quaternion.Euler(0f, 0f, angle);
+
+            yield return null;
+        }
+
+        transform.localRotation = Quaternion.identity;
+
+        isHitRotating = false;
     }
 }
